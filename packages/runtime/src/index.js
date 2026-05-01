@@ -38,7 +38,7 @@ export default function AlpineRouter(Alpine) {
         pattern === '/' ? '' : pattern,
         location.pathname === '/' ? '' : location.pathname
       )
-      el.style.display = params !== null ? '' : 'none'
+      el.style.display = params !== null ? 'block' : 'none'
     }
 
     evaluate()
