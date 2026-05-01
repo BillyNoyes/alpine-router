@@ -30,7 +30,7 @@ export default function AlpineRouter(Alpine) {
     dispatch()
   })
 
-  Alpine.directive('route', (el, { expression }) => {
+  Alpine.directive('route', (el, { expression }, { cleanup }) => {
     const pattern = expression.replace(/^['"]|['"]$/g, '')
 
     function evaluate() {
@@ -45,10 +45,7 @@ export default function AlpineRouter(Alpine) {
 
     const handler = () => evaluate()
     window.addEventListener('alpine-router:navigate', handler)
-
-    Alpine.onBeforeUnmount(el, () => {
-      window.removeEventListener('alpine-router:navigate', handler)
-    })
+    cleanup(() => window.removeEventListener('alpine-router:navigate', handler))
   })
 
   Alpine.directive('component', (el, { expression }, { evaluate }) => {
