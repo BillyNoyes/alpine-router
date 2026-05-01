@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>alpine-router playground</title>
+</head>
+<body x-data>
+  <nav>
+    <a href="/" @click.prevent="$router.push('/')">Home</a>
+    <a href="/about" @click.prevent="$router.push('/about')">About</a>
+    <a href="/blog/hello" @click.prevent="$router.push('/blog/hello')">Blog</a>
+  </nav>
+
+  <div x-route="/">
+    <h1>Home</h1>
+    <div x-component="'Counter'"></div>
+  </div>
+
+  <div x-route="/about">
+    <h1>About</h1>
+    <p>A directive-based router for Alpine.js.</p>
+  </div>
+
+  <div x-route="/blog/:id">
+    <h1>Blog post: <span x-text="$params.id"></span></h1>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
