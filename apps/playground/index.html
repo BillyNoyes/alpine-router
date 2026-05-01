@@ -3,27 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>alpine-router playground</title>
+  <title>alpine-router</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <style>[x-route] { display: none }</style>
+  <script>
+    const redirect = sessionStorage.redirect
+    if (redirect) { delete sessionStorage.redirect; history.replaceState(null, '', redirect) }
+  </script>
 </head>
-<body x-data>
-  <nav>
-    <a href="/" @click.prevent="$router.push('/')">Home</a>
-    <a href="/about" @click.prevent="$router.push('/about')">About</a>
-    <a href="/blog/hello" @click.prevent="$router.push('/blog/hello')">Blog</a>
-  </nav>
+<body x-data="{ path: location.pathname }" @alpine-router:navigate.window="path = location.pathname" class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+      <button @click="$router.push('/')" class="font-semibold text-sm tracking-tight cursor-pointer hover:text-indigo-600 transition-colors">🏔️ alpine-router</button>
+      <nav class="flex items-center gap-1">
+        <button @click="$router.push('/')"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
+          :class="path === '/' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
+          Home
+        </button>
+        <button @click="$router.push('/demo')"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
+          :class="path === '/demo' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
+          Demo
+        </button>
+        <button @click="$router.push('/docs/x-route')"
+          class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
+          :class="path.startsWith('/docs') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
+          Docs
+        </button>
+        <a href="https://github.com/BillyNoyes/alpine-router" target="_blank"
+          class="ml-2 px-3 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Home -->
   <div x-route="/">
-    <h1>Home</h1>
-    <div x-component="'Counter'"></div>
+    <main class="max-w-5xl mx-auto px-6 py-24">
+
+      <!-- Hero -->
+      <div class="text-center mb-20">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+          Just directives. No framework.
+        </div>
+        <h1 class="text-5xl font-bold tracking-tight text-gray-900 mb-4">
+          Routing for <span class="text-indigo-600">Alpine.js</span>
+        </h1>
+        <p class="text-lg text-gray-500 max-w-xl mx-auto mb-8">
+          Add routing and component rendering to any Alpine.js app with a handful of directives — no build step required.
+        </p>
+        <div class="flex items-center justify-center gap-3">
+          <button @click="$router.push('/demo')"
+            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium text-sm transition-colors cursor-pointer shadow-sm">
+            Try the demo →
+          </button>
+          <button @click="$router.push('/docs/x-route')"
+            class="px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-lg font-medium text-sm transition-colors cursor-pointer border border-gray-200 shadow-sm">
+            Read the docs
+          </button>
+        </div>
+      </div>
+
+      <!-- Code snippet -->
+      <div class="mb-20 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+        <div class="flex items-center gap-2 px-4 py-3 bg-gray-900 border-b border-gray-700">
+          <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+          <span class="ml-2 text-xs text-gray-400 font-mono">index.html</span>
+        </div>
+        <pre class="bg-gray-950 text-gray-300 p-6 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-gray-600">&lt;!-- Show a section when the URL matches --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-route</span>=<span class="text-yellow-300">"/about"</span><span class="text-blue-400">&gt;</span>
+  <span class="text-blue-400">&lt;h1&gt;</span>About<span class="text-blue-400">&lt;/h1&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-600">&lt;!-- Render a component inline --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-component</span>=<span class="text-yellow-300">"'Counter'"</span><span class="text-blue-400">&gt;&lt;/div&gt;</span>
+
+<span class="text-gray-600">&lt;!-- Navigate programmatically --&gt;</span>
+<span class="text-blue-400">&lt;button</span> <span class="text-green-400">@click</span>=<span class="text-yellow-300">"$router.push('/about')"</span><span class="text-blue-400">&gt;</span>Go<span class="text-blue-400">&lt;/button&gt;</span>
+
+<span class="text-gray-600">&lt;!-- Access route params --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-route</span>=<span class="text-yellow-300">"/blog/:id"</span><span class="text-blue-400">&gt;</span>
+  <span class="text-blue-400">&lt;span</span> <span class="text-green-400">x-text</span>=<span class="text-yellow-300">"$params.id"</span><span class="text-blue-400">&gt;&lt;/span&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></pre>
+      </div>
+
+      <!-- Feature cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          </div>
+          <code class="text-xs font-mono font-semibold text-indigo-600">x-route</code>
+          <p class="text-xs text-gray-500 mt-1">Show elements when the URL matches</p>
+        </div>
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div class="w-8 h-8 bg-violet-50 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          </div>
+          <code class="text-xs font-mono font-semibold text-violet-600">x-component</code>
+          <p class="text-xs text-gray-500 mt-1">Render registered components inline</p>
+        </div>
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <code class="text-xs font-mono font-semibold text-sky-600">$router</code>
+          <p class="text-xs text-gray-500 mt-1">Navigate with push, replace, back</p>
+        </div>
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+          <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-5 5a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 10V5a2 2 0 012-2z"/></svg>
+          </div>
+          <code class="text-xs font-mono font-semibold text-emerald-600">$params</code>
+          <p class="text-xs text-gray-500 mt-1">Access dynamic route parameters</p>
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <div x-route="/about">
-    <h1>About</h1>
-    <p>A directive-based router for Alpine.js.</p>
+  <!-- Demo -->
+  <div x-route="/demo">
+    <main class="max-w-5xl mx-auto px-6 py-16">
+      <h2 class="text-3xl font-bold tracking-tight mb-2">Interactive Demo</h2>
+      <p class="text-gray-500 mb-12">All running on alpine-router directives. No framework magic.</p>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <!-- Counter -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-sm">Counter</h3>
+              <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">x-component</code></p>
+            </div>
+            <span class="text-xs font-mono bg-violet-50 text-violet-600 px-2 py-1 rounded">x-component="'Counter'"</span>
+          </div>
+          <div class="px-6 py-8 flex items-center justify-center">
+            <div x-component="'Counter'"></div>
+          </div>
+        </div>
+
+        <!-- Dropdown -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-sm">Dropdown</h3>
+              <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">x-component</code></p>
+            </div>
+            <span class="text-xs font-mono bg-violet-50 text-violet-600 px-2 py-1 rounded">x-component="'Dropdown'"</span>
+          </div>
+          <div class="px-6 py-8 flex items-center justify-center">
+            <div x-component="'Dropdown'"></div>
+          </div>
+        </div>
+
+        <!-- $router -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h3 class="font-semibold text-sm">Navigation</h3>
+            <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">$router</code></p>
+          </div>
+          <div class="px-6 py-8 flex flex-col items-center gap-3">
+            <p class="text-xs text-gray-400 font-mono mb-2">
+              Current path: <span class="text-gray-700" x-text="path"></span>
+            </p>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <button @click="$router.push('/')" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">push('/')</button>
+              <button @click="$router.push('/docs/x-route')" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">push('/docs/x-route')</button>
+              <button @click="$router.back()" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">back()</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- $params -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h3 class="font-semibold text-sm">Route Params</h3>
+            <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">$params</code> on <code class="font-mono">x-route="/docs/:section"</code></p>
+          </div>
+          <div class="px-6 py-8 flex flex-col items-center gap-3">
+            <p class="text-xs text-gray-400 mb-2">Navigate to a docs route to see params populate:</p>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <button @click="$router.push('/docs/x-route')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/x-route</button>
+              <button @click="$router.push('/docs/x-component')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/x-component</button>
+              <button @click="$router.push('/docs/params')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/params</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
   </div>
 
-  <div x-route="/blog/:id">
-    <h1>Blog post: <span x-text="$params.id"></span></h1>
+  <!-- Docs -->
+  <div x-route="/docs/:section">
+    <main class="max-w-5xl mx-auto px-6 py-16">
+      <div class="flex items-center gap-2 text-sm text-gray-400 mb-8">
+        <button @click="$router.push('/')" class="hover:text-gray-700 transition-colors cursor-pointer">Home</button>
+        <span>/</span>
+        <span class="text-gray-700 font-medium" x-text="$params.section"></span>
+      </div>
+
+      <div class="flex gap-8">
+        <aside class="w-48 shrink-0">
+          <nav class="flex flex-col gap-1">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Directives</p>
+            <button @click="$router.push('/docs/x-route')"
+              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
+              :class="$params.section === 'x-route' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              x-route
+            </button>
+            <button @click="$router.push('/docs/x-component')"
+              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
+              :class="$params.section === 'x-component' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              x-component
+            </button>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Magics</p>
+            <button @click="$router.push('/docs/router')"
+              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
+              :class="$params.section === 'router' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              $router
+            </button>
+            <button @click="$router.push('/docs/params')"
+              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
+              :class="$params.section === 'params' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              $params
+            </button>
+          </nav>
+        </aside>
+
+        <div class="flex-1 min-w-0">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-mono font-medium mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            $params.section = "<span x-text="$params.section"></span>"
+          </div>
+          <h1 class="text-2xl font-bold mb-2" x-text="$params.section"></h1>
+          <p class="text-gray-500 text-sm">
+            Navigate the sidebar to see <code class="font-mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">$params.section</code> update live —
+            all driven by <code class="font-mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">x-route="/docs/:section"</code>.
+          </p>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script type="module" src="/src/main.js"></script>

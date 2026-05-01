@@ -8,10 +8,12 @@
     "build": "vite build"
   },
   "dependencies": {
-    "alpinejs": "^3.0.0",
-    "alpine-router": "workspace:*"
+    "alpine-router": "workspace:*",
+    "alpinejs": "^3.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "tailwindcss": "^4.2.4",
     "vite": "^5.0.0",
     "vite-plugin-alpine-router": "workspace:*"
   }
