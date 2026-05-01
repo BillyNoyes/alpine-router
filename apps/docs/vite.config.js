@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
-import alpineRouter from 'vite-plugin-alpine-router'
+import alpineComponents from 'vite-plugin-alpine-components'
 
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? '/alpine-router/' : '/',
+  base: process.env.GITHUB_ACTIONS ? '/alpine-components/' : '/',
   plugins: [
     tailwindcss(),
-    alpineRouter(),
+    alpineComponents(),
   ],
   build: {
     outDir: 'dist',

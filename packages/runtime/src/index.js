@@ -8,7 +8,7 @@ export function registerComponent(name, component) {
 }
 
 function dispatch() {
-  window.dispatchEvent(new CustomEvent('alpine-router:navigate'))
+  window.dispatchEvent(new CustomEvent('alpine-components:navigate'))
 }
 
 function updateParams() {
@@ -44,8 +44,8 @@ export default function AlpineRouter(Alpine) {
     evaluate()
 
     const handler = () => evaluate()
-    window.addEventListener('alpine-router:navigate', handler)
-    cleanup(() => window.removeEventListener('alpine-router:navigate', handler))
+    window.addEventListener('alpine-components:navigate', handler)
+    cleanup(() => window.removeEventListener('alpine-components:navigate', handler))
   })
 
   Alpine.directive('component', (el, { expression }, { evaluate }) => {

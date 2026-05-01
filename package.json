@@ -1,9 +1,9 @@
 {
-  "name": "alpine-router-monorepo",
+  "name": "alpine-components-monorepo",
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "dev": "pnpm --filter playground dev",
-    "build": "pnpm --filter vite-plugin-alpine-router build && pnpm --filter alpine-router build"
+    "dev": "pnpm --filter docs dev",
+    "build": "pnpm --filter vite-plugin-alpine-components build && pnpm --filter alpine-components build"
   }
 }

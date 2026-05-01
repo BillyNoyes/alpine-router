@@ -1,0 +1,6 @@
+<!DOCTYPE html>
+<script>
+  const path = location.pathname.replace('/alpine-components', '') || '/'
+  sessionStorage.redirect = path
+  location.replace('/alpine-components/')
+</script>

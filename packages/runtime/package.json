@@ -1,10 +1,10 @@
 {
-  "name": "alpine-router",
+  "name": "alpine-components",
   "version": "0.0.1",
-  "description": "File-based routing and component auto-import runtime for Alpine.js",
+  "description": "Reusable template components and routing for Alpine.js",
   "main": "src/index.js",
   "type": "module",
-  "keywords": ["alpinejs", "routing", "components"],
+  "keywords": ["alpinejs", "components", "routing"],
   "peerDependencies": {
     "alpinejs": ">=3.0.0"
   }
