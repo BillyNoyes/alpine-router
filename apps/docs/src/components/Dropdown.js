@@ -26,6 +26,6 @@ export default {
   data: () => ({
     open: false,
     selected: 'Pick one',
-    items: ['Alpine.js', 'alpine-router', 'Vite', 'Tailwind'],
+    items: ['Alpine.js', 'alpine-components', 'Vite', 'Tailwind'],
   })
 }

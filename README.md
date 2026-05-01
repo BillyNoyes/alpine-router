@@ -1,9 +1,9 @@
-# 🏔️ alpine-router
+# 🧩 alpine-components
 
-> Directive-based routing and component rendering for [Alpine.js](https://alpinejs.dev/)
+> Reusable template components and routing for [Alpine.js](https://alpinejs.dev/)
 
-[![npm](https://img.shields.io/npm/v/alpine-router)](https://www.npmjs.com/package/alpine-router)
-[![license](https://img.shields.io/npm/l/alpine-router)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/alpine-components)](https://www.npmjs.com/package/alpine-components)
+[![license](https://img.shields.io/npm/l/alpine-components)](./LICENSE)
 
 Just directives. No framework. No file conventions. Feels like Alpine. ✨
 
@@ -12,13 +12,13 @@ Just directives. No framework. No file conventions. Feels like Alpine. ✨
 ## 📦 Install
 
 ```bash
-pnpm add alpine-router
+pnpm add alpine-components
 ```
 
 Want component auto-import with Vite? Add the optional plugin too:
 
 ```bash
-pnpm add -D vite-plugin-alpine-router
+pnpm add -D vite-plugin-alpine-components
 ```
 
 ---
@@ -28,9 +28,9 @@ pnpm add -D vite-plugin-alpine-router
 **`src/main.js`**
 ```js
 import Alpine from 'alpinejs'
-import AlpineRouter from 'alpine-router'
+import AlpineComponents from 'alpine-components'
 
-Alpine.plugin(AlpineRouter)
+Alpine.plugin(AlpineComponents)
 Alpine.start()
 ```
 
@@ -101,7 +101,7 @@ export default {
 Register manually:
 
 ```js
-import { registerComponent } from 'alpine-router'
+import { registerComponent } from 'alpine-components'
 import Counter from './components/Counter.js'
 
 registerComponent('Counter', Counter)
@@ -118,20 +118,20 @@ Auto-registers all components in `src/components/` — no manual imports needed:
 **`vite.config.js`**
 ```js
 import { defineConfig } from 'vite'
-import alpineRouter from 'vite-plugin-alpine-router'
+import alpineComponents from 'vite-plugin-alpine-components'
 
 export default defineConfig({
-  plugins: [alpineRouter()],
+  plugins: [alpineComponents()],
 })
 ```
 
 **`src/main.js`**
 ```js
 import Alpine from 'alpinejs'
-import AlpineRouter from 'alpine-router'
-import 'virtual:alpine-router/components'
+import AlpineComponents from 'alpine-components'
+import 'virtual:alpine-components/components'
 
-Alpine.plugin(AlpineRouter)
+Alpine.plugin(AlpineComponents)
 Alpine.start()
 ```
 
@@ -164,7 +164,7 @@ Access dynamic route params from the currently matched `x-route`:
 ## ⚙️ Plugin Options
 
 ```js
-alpineRouter({
+alpineComponents({
   componentsDir: 'src/components', // default
 })
 ```
@@ -174,12 +174,12 @@ alpineRouter({
 ## 📁 Monorepo Structure
 
 ```
-alpine-router/
+alpine-components/
   packages/
-    plugin/     → vite-plugin-alpine-router (optional)
-    runtime/    → alpine-router
+    plugin/     → vite-plugin-alpine-components (optional)
+    runtime/    → alpine-components
   apps/
-    playground/ → dev sandbox
+    docs/       → dev sandbox + docs site
 ```
 
 ---
@@ -188,7 +188,7 @@ alpine-router/
 
 ```bash
 pnpm install
-pnpm dev  # starts the playground
+pnpm dev  # starts the docs site
 ```
 
 ---
