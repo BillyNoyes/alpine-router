@@ -1,10 +1,12 @@
 {
   "name": "alpine-components",
   "version": "0.0.1",
-  "description": "Reusable template components and routing for Alpine.js",
+  "description": "Reusable template components for Alpine.js",
   "main": "src/index.js",
   "type": "module",
-  "keywords": ["alpinejs", "components", "routing"],
+  "files": ["src"],
+  "keywords": ["alpinejs", "components", "alpine"],
+  "license": "MIT",
   "peerDependencies": {
     "alpinejs": ">=3.0.0"
   }
