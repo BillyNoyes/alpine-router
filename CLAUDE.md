@@ -35,13 +35,9 @@ pnpm --filter alpine-components build
 
 ## Runtime API
 
-`x-route="/path"` — shows/hides the element based on `location.pathname`. Supports `:param` dynamic segments. Re-evaluates on `alpine-components:navigate` window events.
+Routing (`x-route`, `$router`, `$params`) has been removed. The package is now focused purely on components.
 
 `x-component="'Name'"` — looks up the component in the registry, sets `el.innerHTML` to its `template`, registers its `data` factory as `Alpine.data('__self__', ...)`, then calls `Alpine.initTree(el)`.
-
-`$router` — `{ push(path), replace(path), back() }`. `push`/`replace` call the History API then dispatch `alpine-components:navigate`.
-
-`$params` — returns the params captured from the first `x-route` element whose pattern matches the current URL.
 
 `registerComponent(name, { template, data })` — named export from `alpine-components`. Called by the Vite plugin's virtual module or manually by the user before `Alpine.start()`.
 

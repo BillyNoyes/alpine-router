@@ -35,6 +35,8 @@ jobs:
 
       - name: Build docs
         run: pnpm --filter docs build
+        env:
+          VITE_BASE: /alpine-components/
 
       - uses: actions/configure-pages@v4
 

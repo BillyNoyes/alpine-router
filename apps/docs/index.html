@@ -5,35 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alpine-components</title>
   <link rel="stylesheet" href="/src/style.css">
-  <style>[x-route] { display: none }</style>
   <script>
     const redirect = sessionStorage.redirect
     if (redirect) { delete sessionStorage.redirect; history.replaceState(null, '', redirect) }
   </script>
 </head>
-<body x-data="{ path: location.pathname }" @alpine-components:navigate.window="path = location.pathname" class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+<body x-data="{ path: location.pathname, get section() { return this.path.split('/docs/').pop() }, go(p) { this.path = p; history.pushState({}, '', p) } }" @popstate.window="path = location.pathname" class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 
   <!-- Nav -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-100">
     <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-      <button @click="$router.push('/')" class="font-semibold text-sm tracking-tight cursor-pointer hover:text-indigo-600 transition-colors">🧩 alpine-components</button>
+      <button @click="go('/')" class="font-semibold text-sm tracking-tight cursor-pointer hover:text-indigo-600 transition-colors">🧩 alpine-components</button>
       <nav class="flex items-center gap-1">
-        <button @click="$router.push('/')"
+        <button @click="go('/')"
           class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
           :class="path === '/' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
           Home
         </button>
-        <button @click="$router.push('/demo')"
+        <button @click="go('/demo')"
           class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
           :class="path === '/demo' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
           Demo
         </button>
-        <button @click="$router.push('/getting-started')"
+        <button @click="go('/getting-started')"
           class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
           :class="path === '/getting-started' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
           Get Started
         </button>
-        <button @click="$router.push('/docs/x-component')"
+        <button @click="go('/docs/x-component')"
           class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
           :class="path.startsWith('/docs') ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'">
           Docs
@@ -48,7 +47,7 @@
   </header>
 
   <!-- Home -->
-  <div x-route="/">
+  <div x-show="path === '/'" style="display:none">
     <main class="max-w-5xl mx-auto px-6 py-24">
 
       <!-- Hero -->
@@ -64,11 +63,11 @@
           Define reusable template components in their own files and render them anywhere with a single directive — no build step required.
         </p>
         <div class="flex items-center justify-center gap-3">
-          <button @click="$router.push('/getting-started')"
+          <button @click="go('/getting-started')"
             class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium text-sm transition-colors cursor-pointer shadow-sm">
             Get started →
           </button>
-          <button @click="$router.push('/demo')"
+          <button @click="go('/demo')"
             class="px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 rounded-lg font-medium text-sm transition-colors cursor-pointer border border-gray-200 shadow-sm">
             See the demo
           </button>
@@ -119,17 +118,17 @@
         </div>
         <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
           <div class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center mb-3">
-            <svg class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            <svg class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           </div>
-          <code class="text-xs font-mono font-semibold text-sky-600">x-route</code>
-          <p class="text-xs text-gray-500 mt-1">Show sections based on current URL</p>
+          <code class="text-xs font-mono font-semibold text-sky-600">Isolated state</code>
+          <p class="text-xs text-gray-500 mt-1">Each component manages its own Alpine data</p>
         </div>
         <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
           <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center mb-3">
-            <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
           </div>
-          <code class="text-xs font-mono font-semibold text-emerald-600">$router</code>
-          <p class="text-xs text-gray-500 mt-1">Navigate with push, replace, back</p>
+          <code class="text-xs font-mono font-semibold text-emerald-600">No build step</code>
+          <p class="text-xs text-gray-500 mt-1">Works with CDN or any Alpine.js setup</p>
         </div>
       </div>
 
@@ -137,7 +136,7 @@
   </div>
 
   <!-- Demo -->
-  <div x-route="/demo">
+  <div x-show="path === '/demo'" style="display:none">
     <main class="max-w-5xl mx-auto px-6 py-16">
       <h2 class="text-3xl font-bold tracking-tight mb-2">Interactive Demo</h2>
       <p class="text-gray-500 mb-12">Components defined in separate files, rendered via <code class="font-mono text-sm">x-component</code>.</p>
@@ -205,122 +204,192 @@
   </div>
 
   <!-- Docs -->
-  <div x-route="/docs/:section">
+  <div x-show="path.startsWith('/docs/')" style="display:none">
     <main class="max-w-5xl mx-auto px-6 py-16">
       <div class="flex items-center gap-2 text-sm text-gray-400 mb-8">
-        <button @click="$router.push('/')" class="hover:text-gray-700 transition-colors cursor-pointer">Home</button>
+        <button @click="go('/')" class="hover:text-gray-700 transition-colors cursor-pointer">Home</button>
         <span>/</span>
-        <span class="text-gray-700 font-medium" x-text="$params.section"></span>
+        <span class="text-gray-700 font-medium" x-text="section"></span>
       </div>
 
       <div class="flex gap-8">
         <aside class="w-48 shrink-0">
           <nav class="flex flex-col gap-1">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Directives</p>
-            <button @click="$router.push('/docs/x-component')"
+            <button @click="go('/docs/x-component')"
               class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
-              :class="$params.section === 'x-component' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              :class="section === 'x-component' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
               x-component
             </button>
-            <button @click="$router.push('/docs/x-route')"
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Plugin</p>
+            <button @click="go('/docs/auto-import')"
               class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
-              :class="$params.section === 'x-route' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
-              x-route
-            </button>
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Magics</p>
-            <button @click="$router.push('/docs/router')"
-              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
-              :class="$params.section === 'router' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
-              $router
-            </button>
-            <button @click="$router.push('/docs/params')"
-              class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
-              :class="$params.section === 'params' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
-              $params
+              :class="section === 'auto-import' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
+              Auto-import
             </button>
           </nav>
         </aside>
 
         <div class="flex-1 min-w-0">
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-mono font-medium mb-4">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            $params.section = "<span x-text="$params.section"></span>"
+
+          <!-- x-component -->
+          <div x-show="section === 'x-component'">
+            <span class="inline-block text-xs font-mono font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full mb-4">directive</span>
+            <h1 class="text-2xl font-bold mb-2">x-component</h1>
+            <p class="text-gray-500 text-sm mb-6">Renders a registered component into the element. Sets the element's <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">innerHTML</code> to the component's template and initialises Alpine on the result.</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">index.html</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-component</span>=<span class="text-yellow-300">"'Counter'"</span><span class="text-blue-400">&gt;&lt;/div&gt;</span></pre>
+            </div>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Component format</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Counter.js</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">export default</span> {
+  <span class="text-green-400">template</span>: <span class="text-yellow-300">`&lt;div x-data="__self__"&gt;...&lt;/div&gt;`</span>,
+  <span class="text-green-400">data</span>: () => ({ <span class="text-gray-500">/* Alpine data object */</span> })
+}</pre>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-sm text-amber-800">
+              Use <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-data="__self__"</code> inside your template — <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-component</code> always registers the <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">data</code> factory under that key before calling <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">Alpine.initTree()</code>.
+            </div>
           </div>
-          <h1 class="text-2xl font-bold mb-2" x-text="$params.section"></h1>
-          <p class="text-gray-500 text-sm">
-            Navigate the sidebar to see <code class="font-mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">$params.section</code> update live —
-            all driven by <code class="font-mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">x-route="/docs/:section"</code>.
-          </p>
+
+          <!-- auto-import -->
+          <div x-show="section === 'auto-import'">
+            <span class="inline-block text-xs font-mono font-semibold text-violet-600 bg-violet-50 px-2.5 py-1 rounded-full mb-4">vite plugin</span>
+            <h1 class="text-2xl font-bold mb-2">Auto-import</h1>
+            <p class="text-gray-500 text-sm mb-6">The optional Vite plugin scans <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">src/components/</code> and registers all components automatically — no manual imports needed.</p>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Install</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">terminal</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto">pnpm add -D vite-plugin-alpine-components</pre>
+            </div>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Configure</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">vite.config.js</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">import</span> alpineComponents <span class="text-blue-400">from</span> <span class="text-yellow-300">'vite-plugin-alpine-components'</span>
+
+<span class="text-blue-400">export default</span> defineConfig({
+  <span class="text-green-400">plugins</span>: [alpineComponents()],
+})</pre>
+            </div>
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Import in main.js</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">main.js</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">import</span> <span class="text-yellow-300">'virtual:alpine-components/components'</span></pre>
+            </div>
+            <div class="bg-violet-50 border border-violet-100 rounded-xl px-4 py-3 text-sm text-violet-800">
+              Any <code class="font-mono text-xs bg-violet-100 px-1 py-0.5 rounded">.js</code> file in <code class="font-mono text-xs bg-violet-100 px-1 py-0.5 rounded">src/components/</code> is auto-registered. The component name comes from the filename — <code class="font-mono text-xs bg-violet-100 px-1 py-0.5 rounded">Counter.js</code> registers as <code class="font-mono text-xs bg-violet-100 px-1 py-0.5 rounded">'Counter'</code>.
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
   </div>
 
   <!-- Getting Started -->
-  <div x-route="/getting-started">
-    <main class="max-w-3xl mx-auto px-6 py-16">
+  <div x-show="path === '/getting-started'" style="display:none">
+    <main class="max-w-3xl mx-auto px-6 py-16" x-data="{ setup: 'vite' }">
       <div class="mb-10">
         <h1 class="text-3xl font-bold tracking-tight mb-2">Getting Started</h1>
-        <p class="text-gray-500">Up and running in under 2 minutes.</p>
+        <p class="text-gray-500 mb-6">Up and running in under 2 minutes.</p>
+        <div class="inline-flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+          <button @click="setup = 'vite'"
+            class="px-4 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
+            :class="setup === 'vite' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'">
+            With Vite plugin
+          </button>
+          <button @click="setup = 'manual'"
+            class="px-4 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer"
+            :class="setup === 'manual' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'">
+            Manual setup
+          </button>
+        </div>
       </div>
 
-      <!-- Step 1 -->
+      <!-- Step 1: Install -->
       <div class="mb-10">
         <div class="flex items-center gap-3 mb-4">
           <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
           <h2 class="text-lg font-semibold">Install</h2>
         </div>
-        <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900">
-            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-            <span class="ml-2 text-xs text-gray-400 font-mono">terminal</span>
+        <div x-show="setup === 'vite'" class="grid grid-cols-2 gap-3">
+          <div>
+            <p class="text-xs text-gray-400 font-mono mb-2">Runtime</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+              <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono"><span class="text-emerald-400">npm</span> install alpine-components</pre>
+            </div>
           </div>
-          <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono"><span class="text-gray-500"># runtime</span>
-<span class="text-emerald-400">npm</span> install alpine-components
-
-<span class="text-gray-500"># optional: vite plugin for auto-importing components</span>
-<span class="text-emerald-400">npm</span> install -D vite-plugin-alpine-components</pre>
+          <div>
+            <p class="text-xs text-gray-400 font-mono mb-2">Vite plugin</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+              <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono"><span class="text-emerald-400">npm</span> install -D vite-plugin-alpine-components</pre>
+            </div>
+          </div>
+        </div>
+        <div x-show="setup === 'manual'">
+          <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">terminal</span></div>
+            <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono"><span class="text-emerald-400">npm</span> install alpine-components</pre>
+          </div>
         </div>
       </div>
 
-      <!-- Step 2 -->
-      <div class="mb-10">
+      <!-- Step 2 (vite only): Configure Vite -->
+      <div x-show="setup === 'vite'" class="mb-10">
         <div class="flex items-center gap-3 mb-4">
           <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
-          <h2 class="text-lg font-semibold">Register the plugin</h2>
+          <h2 class="text-lg font-semibold">Configure Vite</h2>
         </div>
         <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900">
-            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-            <span class="ml-2 text-xs text-gray-400 font-mono">main.js</span>
-          </div>
+          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">vite.config.js</span></div>
+          <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono leading-relaxed"><span class="text-blue-400">import</span> { defineConfig } <span class="text-blue-400">from</span> <span class="text-yellow-300">'vite'</span>
+<span class="text-blue-400">import</span> alpineComponents <span class="text-blue-400">from</span> <span class="text-yellow-300">'vite-plugin-alpine-components'</span>
+
+<span class="text-blue-400">export default</span> defineConfig({
+  <span class="text-green-400">plugins</span>: [alpineComponents()],
+})</pre>
+        </div>
+      </div>
+
+      <!-- Step 3/2: main.js -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0" x-text="setup === 'vite' ? '3' : '2'"></span>
+          <h2 class="text-lg font-semibold">Register the plugin</h2>
+        </div>
+        <div x-show="setup === 'vite'" class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">main.js</span></div>
           <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono leading-relaxed"><span class="text-blue-400">import</span> Alpine <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpinejs'</span>
 <span class="text-blue-400">import</span> AlpineComponents <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpine-components'</span>
-<span class="text-gray-600">// if using the vite plugin:</span>
 <span class="text-blue-400">import</span> <span class="text-yellow-300">'virtual:alpine-components/components'</span>
 
 Alpine.<span class="text-green-400">plugin</span>(AlpineComponents)
 Alpine.<span class="text-green-400">start</span>()</pre>
         </div>
+        <div x-show="setup === 'manual'" class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">main.js</span></div>
+          <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono leading-relaxed"><span class="text-blue-400">import</span> Alpine <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpinejs'</span>
+<span class="text-blue-400">import</span> AlpineComponents, { registerComponent } <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpine-components'</span>
+<span class="text-blue-400">import</span> Counter <span class="text-blue-400">from</span> <span class="text-yellow-300">'./components/Counter.js'</span>
+
+<span class="text-green-400">registerComponent</span>(<span class="text-yellow-300">'Counter'</span>, Counter)
+Alpine.<span class="text-green-400">plugin</span>(AlpineComponents)
+Alpine.<span class="text-green-400">start</span>()</pre>
+        </div>
       </div>
 
-      <!-- Step 3 -->
+      <!-- Step 4/3: Create a component -->
       <div class="mb-10">
         <div class="flex items-center gap-3 mb-4">
-          <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
+          <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0" x-text="setup === 'vite' ? '4' : '3'"></span>
           <h2 class="text-lg font-semibold">Create a component</h2>
         </div>
         <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900">
-            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-            <span class="ml-2 text-xs text-gray-400 font-mono">src/components/Counter.js</span>
-          </div>
+          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Counter.js</span></div>
           <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono leading-relaxed"><span class="text-blue-400">export default</span> {
   <span class="text-green-400">template</span>: <span class="text-yellow-300">`
     &lt;div x-data="__self__"&gt;
@@ -334,22 +403,18 @@ Alpine.<span class="text-green-400">start</span>()</pre>
   })
 }</pre>
         </div>
-        <p class="text-xs text-gray-400 mt-3 ml-1">The Vite plugin auto-registers anything in <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">src/components/</code>. Without the plugin, call <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">registerComponent('Counter', Counter)</code> manually before <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">Alpine.start()</code>.</p>
+        <p class="text-xs text-gray-400 mt-3 ml-1" x-show="setup === 'vite'">The Vite plugin auto-registers anything in <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">src/components/</code>.</p>
+        <p class="text-xs text-gray-400 mt-3 ml-1" x-show="setup === 'manual'">Call <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">registerComponent('Counter', Counter)</code> in main.js before <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">Alpine.start()</code>.</p>
       </div>
 
-      <!-- Step 4 -->
+      <!-- Step 5/4: Use it -->
       <div class="mb-12">
         <div class="flex items-center gap-3 mb-4">
-          <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
+          <span class="w-7 h-7 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0" x-text="setup === 'vite' ? '5' : '4'"></span>
           <h2 class="text-lg font-semibold">Use it in your HTML</h2>
         </div>
         <div class="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900">
-            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-            <span class="ml-2 text-xs text-gray-400 font-mono">index.html</span>
-          </div>
+          <div class="flex items-center gap-2 px-4 py-3 bg-gray-900"><span class="w-3 h-3 rounded-full bg-red-500/80"></span><span class="w-3 h-3 rounded-full bg-yellow-500/80"></span><span class="w-3 h-3 rounded-full bg-green-500/80"></span><span class="ml-2 text-xs text-gray-400 font-mono">index.html</span></div>
           <pre class="bg-gray-950 text-gray-300 px-6 py-4 text-sm font-mono leading-relaxed"><span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-component</span>=<span class="text-yellow-300">"'Counter'"</span><span class="text-blue-400">&gt;&lt;/div&gt;</span></pre>
         </div>
       </div>
@@ -358,15 +423,15 @@ Alpine.<span class="text-green-400">start</span>()</pre>
       <div class="border-t border-gray-100 pt-8">
         <p class="text-sm font-medium text-gray-500 mb-4">What's next?</p>
         <div class="grid grid-cols-3 gap-3">
-          <button @click="$router.push('/demo')"
+          <button @click="go('/demo')"
             class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm text-left hover:border-indigo-200 transition-colors cursor-pointer group">
             <p class="text-sm font-semibold group-hover:text-indigo-600 transition-colors">Live demo →</p>
             <p class="text-xs text-gray-400 mt-1">See components in action</p>
           </button>
-          <button @click="$router.push('/docs/x-component')"
+          <button @click="go('/docs/x-component')"
             class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm text-left hover:border-indigo-200 transition-colors cursor-pointer group">
             <p class="text-sm font-semibold group-hover:text-indigo-600 transition-colors">API docs →</p>
-            <p class="text-xs text-gray-400 mt-1">All directives and magics</p>
+            <p class="text-xs text-gray-400 mt-1">All directives and options</p>
           </button>
           <a href="https://github.com/BillyNoyes/alpine-components" target="_blank"
             class="p-4 bg-white rounded-xl border border-gray-100 shadow-sm text-left hover:border-indigo-200 transition-colors cursor-pointer group">

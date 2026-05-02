@@ -29,46 +29,23 @@ pnpm add -D vite-plugin-alpine-components
 ```js
 import Alpine from 'alpinejs'
 import AlpineComponents from 'alpine-components'
+import { registerComponent } from 'alpine-components'
+import Counter from './components/Counter.js'
 
+registerComponent('Counter', Counter)
 Alpine.plugin(AlpineComponents)
 Alpine.start()
 ```
 
 **`index.html`**
 ```html
-<body x-data>
-  <nav>
-    <a href="/" @click.prevent="$router.push('/')">Home</a>
-    <a href="/about" @click.prevent="$router.push('/about')">About</a>
-  </nav>
-
-  <div x-route="/">
-    <h1>Home</h1>
-  </div>
-
-  <div x-route="/about">
-    <h1>About</h1>
-  </div>
-
+<body>
+  <div x-component="'Counter'"></div>
   <script type="module" src="/src/main.js"></script>
 </body>
 ```
 
 That's it. 🎉
-
----
-
-## 🗺️ `x-route`
-
-Shows an element when the URL matches, hides it otherwise. Supports dynamic segments:
-
-```html
-<div x-route="/">Home</div>
-<div x-route="/about">About</div>
-<div x-route="/blog/:id">
-  Blog post: <span x-text="$params.id"></span>
-</div>
-```
 
 ---
 
@@ -133,30 +110,6 @@ import 'virtual:alpine-components/components'
 
 Alpine.plugin(AlpineComponents)
 Alpine.start()
-```
-
----
-
-## 🧭 `$router`
-
-Programmatic navigation anywhere in your Alpine markup:
-
-```html
-<button @click="$router.push('/about')">Go to About</button>
-<button @click="$router.replace('/login')">Replace history</button>
-<button @click="$router.back()">Go back</button>
-```
-
----
-
-## 🔖 `$params`
-
-Access dynamic route params from the currently matched `x-route`:
-
-```html
-<div x-route="/blog/:id">
-  <span x-text="$params.id"></span>
-</div>
 ```
 
 ---

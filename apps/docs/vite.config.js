@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import alpineComponents from 'vite-plugin-alpine-components'
 
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? '/alpine-components/' : '/',
+  base: process.env.VITE_BASE ?? '/',
   plugins: [
     tailwindcss(),
     alpineComponents(),
