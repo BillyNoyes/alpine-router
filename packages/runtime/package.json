@@ -1,12 +1,17 @@
 {
   "name": "alpine-components",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Reusable template components for Alpine.js",
   "main": "src/index.js",
   "type": "module",
   "files": ["src"],
   "keywords": ["alpinejs", "components", "alpine"],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BillyNoyes/alpine-components.git",
+    "directory": "packages/runtime"
+  },
   "peerDependencies": {
     "alpinejs": ">=3.0.0"
   }

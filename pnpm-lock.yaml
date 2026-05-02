@@ -26,15 +26,6 @@ importers:
       vite:
         specifier: ^5.0.0
         version: 5.4.21(lightningcss@1.32.0)
-      vite-plugin-alpine-components:
-        specifier: workspace:*
-        version: link:../../packages/plugin
-
-  packages/plugin:
-    dependencies:
-      vite:
-        specifier: '>=5.0.0'
-        version: 5.4.21(lightningcss@1.32.0)
 
   packages/runtime:
     dependencies:

@@ -4,6 +4,6 @@
   "packageManager": "pnpm@9.0.0",
   "scripts": {
     "dev": "pnpm --filter docs dev",
-    "build": "pnpm --filter vite-plugin-alpine-components build && pnpm --filter alpine-components build"
+    "build": "pnpm --filter alpine-components build"
   }
 }

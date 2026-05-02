@@ -1,6 +1,6 @@
 # 🧩 alpine-components
 
-> Reusable template components and routing for [Alpine.js](https://alpinejs.dev/)
+> Reusable template components for [Alpine.js](https://alpinejs.dev/)
 
 [![npm](https://img.shields.io/npm/v/alpine-components)](https://www.npmjs.com/package/alpine-components)
 [![license](https://img.shields.io/npm/l/alpine-components)](./LICENSE)
@@ -15,12 +15,6 @@ Just directives. No framework. No file conventions. Feels like Alpine. ✨
 pnpm add alpine-components
 ```
 
-Want component auto-import with Vite? Add the optional plugin too:
-
-```bash
-pnpm add -D vite-plugin-alpine-components
-```
-
 ---
 
 ## ⚡ Quick Start
@@ -28,8 +22,7 @@ pnpm add -D vite-plugin-alpine-components
 **`src/main.js`**
 ```js
 import Alpine from 'alpinejs'
-import AlpineComponents from 'alpine-components'
-import { registerComponent } from 'alpine-components'
+import AlpineComponents, { registerComponent } from 'alpine-components'
 import Counter from './components/Counter.js'
 
 registerComponent('Counter', Counter)
@@ -75,51 +68,13 @@ export default {
 }
 ```
 
-Register manually:
+Register manually before `Alpine.start()`:
 
 ```js
 import { registerComponent } from 'alpine-components'
 import Counter from './components/Counter.js'
 
 registerComponent('Counter', Counter)
-```
-
-Or use the Vite plugin to auto-register everything in `src/components/` 👇
-
----
-
-## ⚡ Vite Plugin (optional)
-
-Auto-registers all components in `src/components/` — no manual imports needed:
-
-**`vite.config.js`**
-```js
-import { defineConfig } from 'vite'
-import alpineComponents from 'vite-plugin-alpine-components'
-
-export default defineConfig({
-  plugins: [alpineComponents()],
-})
-```
-
-**`src/main.js`**
-```js
-import Alpine from 'alpinejs'
-import AlpineComponents from 'alpine-components'
-import 'virtual:alpine-components/components'
-
-Alpine.plugin(AlpineComponents)
-Alpine.start()
-```
-
----
-
-## ⚙️ Plugin Options
-
-```js
-alpineComponents({
-  componentsDir: 'src/components', // default
-})
 ```
 
 ---
@@ -129,7 +84,6 @@ alpineComponents({
 ```
 alpine-components/
   packages/
-    plugin/     → vite-plugin-alpine-components (optional)
     runtime/    → alpine-components
   apps/
     docs/       → dev sandbox + docs site

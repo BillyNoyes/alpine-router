@@ -14,7 +14,6 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
     "tailwindcss": "^4.2.4",
-    "vite": "^5.0.0",
-    "vite-plugin-alpine-components": "workspace:*"
+    "vite": "^5.0.0"
   }
 }
