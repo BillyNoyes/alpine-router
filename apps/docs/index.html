@@ -172,37 +172,31 @@
           </div>
         </div>
 
-        <!-- $router -->
+        <!-- Modal -->
         <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div class="px-6 py-4 border-b border-gray-100">
-            <h3 class="font-semibold text-sm">Routing</h3>
-            <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">x-route</code> + <code class="font-mono">$router</code></p>
-          </div>
-          <div class="px-6 py-8 flex flex-col items-center gap-3">
-            <p class="text-xs text-gray-400 font-mono mb-2">
-              Current path: <span class="text-gray-700" x-text="path"></span>
-            </p>
-            <div class="flex flex-wrap gap-2 justify-center">
-              <button @click="$router.push('/')" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">push('/')</button>
-              <button @click="$router.push('/docs/x-component')" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">push('/docs/x-component')</button>
-              <button @click="$router.back()" class="px-3 py-1.5 bg-gray-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-md text-sm font-mono transition-colors cursor-pointer">back()</button>
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-sm">Modal</h3>
+              <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Modal.js</code></p>
             </div>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Modal'"</span>
+          </div>
+          <div class="px-6 py-8 flex items-center justify-center">
+            <div x-component="'Modal'"></div>
           </div>
         </div>
 
-        <!-- $params -->
+        <!-- Accordion -->
         <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div class="px-6 py-4 border-b border-gray-100">
-            <h3 class="font-semibold text-sm">Route Params</h3>
-            <p class="text-xs text-gray-400 mt-0.5">via <code class="font-mono">$params</code> on <code class="font-mono">x-route="/docs/:section"</code></p>
-          </div>
-          <div class="px-6 py-8 flex flex-col items-center gap-3">
-            <p class="text-xs text-gray-400 mb-2">Navigate to a docs route to see params populate:</p>
-            <div class="flex flex-wrap gap-2 justify-center">
-              <button @click="$router.push('/docs/x-component')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/x-component</button>
-              <button @click="$router.push('/docs/x-route')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/x-route</button>
-              <button @click="$router.push('/docs/router')" class="px-3 py-1.5 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-md text-sm font-mono transition-colors cursor-pointer">/docs/router</button>
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-semibold text-sm">Accordion</h3>
+              <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Accordion.js</code></p>
             </div>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Accordion'"</span>
+          </div>
+          <div class="px-6 py-6">
+            <div x-component="'Accordion'"></div>
           </div>
         </div>
 
