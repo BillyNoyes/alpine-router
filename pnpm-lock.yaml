@@ -8,11 +8,11 @@ importers:
 
   .: {}
 
-  apps/docs:
+  docs:
     dependencies:
       alpine-components:
         specifier: workspace:*
-        version: link:../../packages/runtime
+        version: link:../plugin
       alpinejs:
         specifier: ^3.0.0
         version: 3.15.12
@@ -27,7 +27,7 @@ importers:
         specifier: ^5.0.0
         version: 5.4.21(lightningcss@1.32.0)
 
-  packages/runtime:
+  plugin:
     dependencies:
       alpinejs:
         specifier: '>=3.0.0'

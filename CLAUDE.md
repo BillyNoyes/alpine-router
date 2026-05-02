@@ -6,8 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `alpine-components` is a lightweight Alpine.js plugin that adds directive-based component rendering. It is intentionally not a framework — no file conventions, no build tooling required.
 
-- `packages/runtime` (`alpine-components`) — The Alpine.js plugin. Registers the `x-component` directive. No Vite dependency.
-- `apps/docs` — Vite + Alpine.js docs site and sandbox consuming the package via workspace link.
+- `plugin/` (`alpine-components`) — The Alpine.js plugin. Registers the `x-component` directive. No Vite dependency.
+- `docs/` — Vite + Alpine.js docs site and sandbox consuming the package via workspace link.
 
 ## Monorepo
 

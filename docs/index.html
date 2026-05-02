@@ -211,13 +211,35 @@
 
       <div class="flex gap-8">
         <aside class="w-48 shrink-0">
-          <nav class="flex flex-col gap-1">
+          <nav class="flex flex-col gap-0.5">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Directives</p>
             <button @click="go('/docs/x-component')"
               class="text-left px-3 py-1.5 rounded-md text-sm transition-colors cursor-pointer"
               :class="section === 'x-component' ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'">
               x-component
             </button>
+            <div x-show="section === 'x-component'" class="flex flex-col gap-0.5 ml-3 mt-0.5">
+              <button @click="go('/docs/x-component'); $nextTick(() => document.getElementById('xc-usage').scrollIntoView({behavior:'smooth'}))"
+                class="text-left px-3 py-1 rounded-md text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                Usage
+              </button>
+              <button @click="go('/docs/x-component'); $nextTick(() => document.getElementById('xc-format').scrollIntoView({behavior:'smooth'}))"
+                class="text-left px-3 py-1 rounded-md text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                Component format
+              </button>
+              <button @click="go('/docs/x-component'); $nextTick(() => document.getElementById('xc-registering').scrollIntoView({behavior:'smooth'}))"
+                class="text-left px-3 py-1 rounded-md text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                Registering components
+              </button>
+              <button @click="go('/docs/x-component'); $nextTick(() => document.getElementById('xc-dataless').scrollIntoView({behavior:'smooth'}))"
+                class="text-left px-3 py-1 rounded-md text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                Data-less components
+              </button>
+              <button @click="go('/docs/x-component'); $nextTick(() => document.getElementById('xc-troubleshooting').scrollIntoView({behavior:'smooth'}))"
+                class="text-left px-3 py-1 rounded-md text-xs text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+                Troubleshooting
+              </button>
+            </div>
           </nav>
         </aside>
 
