@@ -227,21 +227,100 @@
           <div x-show="section === 'x-component'">
             <span class="inline-block text-xs font-mono font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full mb-4">directive</span>
             <h1 class="text-2xl font-bold mb-2">x-component</h1>
-            <p class="text-gray-500 text-sm mb-6">Renders a registered component into the element. Sets the element's <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">innerHTML</code> to the component's template and initialises Alpine on the result.</p>
-            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+            <p class="text-gray-500 text-sm mb-8">Looks up a registered component by name, sets the element's <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">innerHTML</code> to its <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">template</code>, registers its <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> factory with Alpine, then calls <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.initTree()</code> on the element.</p>
+
+            <!-- Usage -->
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Usage</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-8">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">index.html</span></div>
               <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-component</span>=<span class="text-yellow-300">"'Counter'"</span><span class="text-blue-400">&gt;&lt;/div&gt;</span></pre>
             </div>
+
+            <!-- Component format -->
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Component format</p>
-            <div class="rounded-xl overflow-hidden border border-gray-200 mb-6">
+            <p class="text-gray-500 text-sm mb-3">A component is a plain JS module that exports a <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">template</code> string and a <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> factory function.</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-3">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Counter.js</span></div>
               <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">export default</span> {
-  <span class="text-green-400">template</span>: <span class="text-yellow-300">`&lt;div x-data="__self__"&gt;...&lt;/div&gt;`</span>,
-  <span class="text-green-400">data</span>: () => ({ <span class="text-gray-500">/* Alpine data object */</span> })
+  <span class="text-green-400">template</span>: <span class="text-yellow-300">`
+    &lt;div x-data="__self__"&gt;
+      &lt;p&gt;Count: &lt;span x-text="count"&gt;&lt;/span&gt;&lt;/p&gt;
+      &lt;button @click="increment"&gt;+&lt;/button&gt;
+    &lt;/div&gt;
+  `</span>,
+  <span class="text-green-400">data</span>: () => ({
+    count: <span class="text-orange-400">0</span>,
+    increment() { <span class="text-blue-400">this</span>.count++ }
+  })
 }</pre>
             </div>
-            <div class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-sm text-amber-800">
-              Use <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-data="__self__"</code> inside your template — <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-component</code> always registers the <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">data</code> factory under that key before calling <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">Alpine.initTree()</code>.
+            <div class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-sm text-amber-800 mb-8">
+              <p class="font-medium mb-1">The <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">__self__</code> convention</p>
+              <p>The root element of your template must have <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-data="__self__"</code>. Before calling <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">Alpine.initTree()</code>, <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">x-component</code> registers your <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">data</code> factory under the name <code class="font-mono text-xs bg-amber-100 px-1 py-0.5 rounded">__self__</code> — so Alpine knows where to find the component's state.</p>
+            </div>
+
+            <!-- Registering components -->
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Registering components</p>
+            <p class="text-gray-500 text-sm mb-3">Call <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> for every component before <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.start()</code>.</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-3">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">main.js</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">import</span> Alpine <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpinejs'</span>
+<span class="text-blue-400">import</span> AlpineComponents, { registerComponent } <span class="text-blue-400">from</span> <span class="text-yellow-300">'alpine-components'</span>
+<span class="text-blue-400">import</span> Counter <span class="text-blue-400">from</span> <span class="text-yellow-300">'./components/Counter.js'</span>
+<span class="text-blue-400">import</span> Modal <span class="text-blue-400">from</span> <span class="text-yellow-300">'./components/Modal.js'</span>
+
+<span class="text-gray-500">// register before Alpine.start()</span>
+<span class="text-green-400">registerComponent</span>(<span class="text-yellow-300">'Counter'</span>, Counter)
+<span class="text-green-400">registerComponent</span>(<span class="text-yellow-300">'Modal'</span>, Modal)
+
+Alpine.<span class="text-green-400">plugin</span>(AlpineComponents)
+Alpine.<span class="text-green-400">start</span>()</pre>
+            </div>
+            <p class="text-gray-500 text-xs mb-8">The name passed to <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> must match the string in <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-component="'Counter'"</code> exactly.</p>
+
+            <!-- Data-less components -->
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Data-less components</p>
+            <p class="text-gray-500 text-sm mb-3">If a component has no reactive state, omit <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> and <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-data</code> entirely.</p>
+            <div class="rounded-xl overflow-hidden border border-gray-200 mb-8">
+              <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Banner.js</span></div>
+              <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">export default</span> {
+  <span class="text-green-400">template</span>: <span class="text-yellow-300">`&lt;div class="banner"&gt;Hello world&lt;/div&gt;`</span>
+}</pre>
+            </div>
+
+            <!-- Troubleshooting -->
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Troubleshooting</p>
+            <div class="space-y-3">
+              <details class="rounded-xl border border-gray-200 overflow-hidden">
+                <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Component doesn't render — nothing appears</summary>
+                <div class="px-4 py-3 text-sm text-gray-600 border-t border-gray-100">
+                  <p class="mb-2">The component name wasn't registered before <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.start()</code>. Make sure you've called <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent('Name', component)</code> and that the name exactly matches the string in <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-component="'Name'"</code> (case-sensitive).</p>
+                </div>
+              </details>
+              <details class="rounded-xl border border-gray-200 overflow-hidden">
+                <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Alpine directives in the template don't work</summary>
+                <div class="px-4 py-3 text-sm text-gray-600 border-t border-gray-100">
+                  <p>The template root element must have <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-data="__self__"</code>. Without it, Alpine doesn't know where the component's data scope is, so directives like <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-text</code> and <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">@click</code> won't bind.</p>
+                </div>
+              </details>
+              <details class="rounded-xl border border-gray-200 overflow-hidden">
+                <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Error: data is not a function</summary>
+                <div class="px-4 py-3 text-sm text-gray-600 border-t border-gray-100">
+                  <p><code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> must be a factory function that returns an object — <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data: () => ({ count: 0 })</code> — not a plain object. Alpine calls it each time a component is instantiated so each instance gets its own isolated state.</p>
+                </div>
+              </details>
+              <details class="rounded-xl border border-gray-200 overflow-hidden">
+                <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Multiple instances share state</summary>
+                <div class="px-4 py-3 text-sm text-gray-600 border-t border-gray-100">
+                  <p>If two counters affect each other, <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> is probably defined as a plain object rather than a factory function. Change <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data: { count: 0 }</code> to <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data: () => ({ count: 0 })</code> so each instance gets its own copy.</p>
+                </div>
+              </details>
+              <details class="rounded-xl border border-gray-200 overflow-hidden">
+                <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Template renders but Alpine isn't initialised</summary>
+                <div class="px-4 py-3 text-sm text-gray-600 border-t border-gray-100">
+                  <p>Make sure <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.plugin(AlpineComponents)</code> is called before <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.start()</code>. If you're loading Alpine from a CDN, call <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> and <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.plugin</code> in a <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">defer</code> script before Alpine's own script tag.</p>
+                </div>
+              </details>
             </div>
           </div>
 
