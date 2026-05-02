@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/alpine-components)](https://www.npmjs.com/package/alpine-components)
 [![license](https://img.shields.io/npm/l/alpine-components)](./LICENSE)
 
-Just directives. No framework. No file conventions. Feels like Alpine. ✨
+Define reusable components as plain JS objects. Register once, render anywhere with `x-component`.
 
 ---
 
