@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alpine-components</title>
   <link rel="stylesheet" href="/src/style.css">
+  <style>
+    @keyframes scanDown {
+      0%   { top: -8%; opacity: 0; }
+      12%  { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { top: 108%; opacity: 0; }
+    }
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 28px;
+      background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.55), transparent);
+      filter: blur(8px);
+      animation: scanDown 0.42s ease-in-out forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
   <script>
     window.__base = '%BASE_URL%'.replace(/\/$/, '')
     const redirect = sessionStorage.redirect
@@ -141,22 +159,21 @@
       <div class="grid md:grid-cols-2 gap-6">
 
         <!-- Counter -->
-        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false, scanning: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Counter</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Counter.js</code></p>
             </div>
-            <div class="flex items-center gap-3">
-              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
-              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Counter'"</span>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Counter'"</span>
+          </div>
+          <div class="relative min-h-[160px]">
+            <div x-show="scanning" class="scan-line"></div>
+            <div x-show="!showCode" class="px-6 py-8 pb-12 flex items-center justify-center">
+              <div x-component="'Counter'"></div>
             </div>
-          </div>
-          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
-            <div x-component="'Counter'"></div>
-          </div>
-          <div x-show="showCode" class="px-6 py-4">
-            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+            <div x-show="showCode" class="px-6 py-4 pb-12">
+              <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
   template: `
     &lt;div x-data="__self__" class="flex items-center gap-4"&gt;
       &lt;button @click="decrement"&gt;&#x2212;&lt;/button&gt;
@@ -170,26 +187,27 @@
     decrement() { this.count-- },
   })
 }</pre>
+            </div>
+            <button @click="scanning = true; setTimeout(() => { showCode = !showCode; scanning = false }, 210)" class="absolute bottom-3 right-4 text-xs font-mono text-gray-400 hover:text-indigo-600 border border-gray-200 hover:border-indigo-300 bg-white rounded px-2 py-1 transition-colors cursor-pointer" x-text="showCode ? '← Demo' : '&lt;&gt; Source'"></button>
           </div>
         </div>
 
         <!-- Dropdown -->
-        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false, scanning: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Dropdown</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Dropdown.js</code></p>
             </div>
-            <div class="flex items-center gap-3">
-              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
-              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Dropdown'"</span>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Dropdown'"</span>
+          </div>
+          <div class="relative min-h-[160px]">
+            <div x-show="scanning" class="scan-line"></div>
+            <div x-show="!showCode" class="px-6 py-8 pb-12 flex items-center justify-center">
+              <div x-component="'Dropdown'"></div>
             </div>
-          </div>
-          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
-            <div x-component="'Dropdown'"></div>
-          </div>
-          <div x-show="showCode" class="px-6 py-4">
-            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+            <div x-show="showCode" class="px-6 py-4 pb-12">
+              <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
   template: `
     &lt;div x-data="__self__" class="relative inline-block"&gt;
       ...
@@ -201,26 +219,27 @@
     items: ['Alpine.js', 'alpine-components', 'Vite', 'Tailwind'],
   })
 }</pre>
+            </div>
+            <button @click="scanning = true; setTimeout(() => { showCode = !showCode; scanning = false }, 210)" class="absolute bottom-3 right-4 text-xs font-mono text-gray-400 hover:text-indigo-600 border border-gray-200 hover:border-indigo-300 bg-white rounded px-2 py-1 transition-colors cursor-pointer" x-text="showCode ? '← Demo' : '&lt;&gt; Source'"></button>
           </div>
         </div>
 
         <!-- Modal -->
-        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false, scanning: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Modal</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Modal.js</code></p>
             </div>
-            <div class="flex items-center gap-3">
-              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
-              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Modal'"</span>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Modal'"</span>
+          </div>
+          <div class="relative min-h-[160px]">
+            <div x-show="scanning" class="scan-line"></div>
+            <div x-show="!showCode" class="px-6 py-8 pb-12 flex items-center justify-center">
+              <div x-component="'Modal'"></div>
             </div>
-          </div>
-          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
-            <div x-component="'Modal'"></div>
-          </div>
-          <div x-show="showCode" class="px-6 py-4">
-            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+            <div x-show="showCode" class="px-6 py-4 pb-12">
+              <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
   template: `
     &lt;div x-data="__self__"&gt;
       ...
@@ -228,26 +247,27 @@
   `,
   data: () => ({ open: false })
 }</pre>
+            </div>
+            <button @click="scanning = true; setTimeout(() => { showCode = !showCode; scanning = false }, 210)" class="absolute bottom-3 right-4 text-xs font-mono text-gray-400 hover:text-indigo-600 border border-gray-200 hover:border-indigo-300 bg-white rounded px-2 py-1 transition-colors cursor-pointer" x-text="showCode ? '← Demo' : '&lt;&gt; Source'"></button>
           </div>
         </div>
 
         <!-- Accordion -->
-        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false, scanning: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Accordion</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Accordion.js</code></p>
             </div>
-            <div class="flex items-center gap-3">
-              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
-              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Accordion'"</span>
+            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Accordion'"</span>
+          </div>
+          <div class="relative min-h-[160px]">
+            <div x-show="scanning" class="scan-line"></div>
+            <div x-show="!showCode" class="px-6 py-6 pb-12">
+              <div x-component="'Accordion'"></div>
             </div>
-          </div>
-          <div x-show="!showCode" class="px-6 py-6">
-            <div x-component="'Accordion'"></div>
-          </div>
-          <div x-show="showCode" class="px-6 py-4">
-            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+            <div x-show="showCode" class="px-6 py-4 pb-12">
+              <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
   template: `
     &lt;div x-data="__self__" class="w-full space-y-2"&gt;
       ...
@@ -262,6 +282,8 @@
     ]
   })
 }</pre>
+            </div>
+            <button @click="scanning = true; setTimeout(() => { showCode = !showCode; scanning = false }, 210)" class="absolute bottom-3 right-4 text-xs font-mono text-gray-400 hover:text-indigo-600 border border-gray-200 hover:border-indigo-300 bg-white rounded px-2 py-1 transition-colors cursor-pointer" x-text="showCode ? '← Demo' : '&lt;&gt; Source'"></button>
           </div>
         </div>
 
@@ -456,6 +478,7 @@ Alpine.<span class="text-green-400">start</span>()</pre>
 Alpine.<span class="text-green-400">plugin</span>(AlpineComponents)
 Alpine.<span class="text-green-400">start</span>()</pre>
         </div>
+        <p class="text-gray-500 text-sm mt-3">Call <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> before <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.plugin()</code> and <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.start()</code> — the registry must be populated before Alpine initializes the tree.</p>
       </div>
 
       <!-- Step 3: Create a component -->
