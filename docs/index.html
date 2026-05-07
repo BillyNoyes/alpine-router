@@ -8,13 +8,10 @@
   <script>
     window.__base = '%BASE_URL%'.replace(/\/$/, '')
     const redirect = sessionStorage.redirect
-    if (redirect) { delete sessionStorage.redirect; history.replaceState(null, '', redirect) }
-    else if (window.__base && location.pathname.startsWith(window.__base)) {
-      history.replaceState(null, '', location.pathname.slice(window.__base.length) || '/')
-    }
+    if (redirect) { delete sessionStorage.redirect; history.replaceState(null, '', (window.__base || '') + redirect) }
   </script>
 </head>
-<body x-data="{ path: location.pathname, get section() { return this.path.split('/docs/').pop() }, go(p) { this.path = p; history.pushState({}, '', (window.__base || '') + p) } }" @popstate.window="path = location.pathname.replace(window.__base || '', '') || '/'" class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+<body x-data="{ path: location.pathname.replace(window.__base || '', '') || '/', get section() { return this.path.split('/docs/').pop() }, go(p) { this.path = p; history.pushState({}, '', (window.__base || '') + p) } }" @popstate.window="path = location.pathname.replace(window.__base || '', '') || '/'" class="min-h-screen bg-gray-50 text-gray-900 antialiased">
 
   <!-- Nav -->
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-100">
@@ -94,7 +91,10 @@
       &lt;button @click="increment"&gt;+&lt;/button&gt;
     &lt;/div&gt;
   `</span>,
-  <span class="text-green-400">data</span>: () => ({ count: <span class="text-orange-400">0</span>, increment() { <span class="text-blue-400">this</span>.count++ } })
+  <span class="text-green-400">data</span>: () => ({
+    count: <span class="text-orange-400">0</span>,
+    increment() { <span class="text-blue-400">this</span>.count++ }
+  })
 }
 </pre>
         <div class="flex items-center gap-2 px-4 py-3 bg-gray-900 border-t border-b border-gray-700">
@@ -105,22 +105,22 @@
       </div>
 
       <!-- Feature cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+      <div class="flex flex-wrap justify-center gap-4">
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm w-full sm:w-56">
           <div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center mb-3">
             <svg class="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
           </div>
           <code class="text-xs font-mono font-semibold text-indigo-600">x-component</code>
           <p class="text-xs text-gray-500 mt-1">Render any component inline by name</p>
         </div>
-        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm w-full sm:w-56">
           <div class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center mb-3">
             <svg class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
           </div>
           <code class="text-xs font-mono font-semibold text-sky-600">Isolated state</code>
           <p class="text-xs text-gray-500 mt-1">Each component manages its own Alpine data</p>
         </div>
-        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm w-full sm:w-56">
           <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center mb-3">
             <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
           </div>
@@ -141,58 +141,127 @@
       <div class="grid md:grid-cols-2 gap-6">
 
         <!-- Counter -->
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Counter</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Counter.js</code></p>
             </div>
-            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Counter'"</span>
+            <div class="flex items-center gap-3">
+              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
+              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Counter'"</span>
+            </div>
           </div>
-          <div class="px-6 py-8 flex items-center justify-center">
+          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
             <div x-component="'Counter'"></div>
+          </div>
+          <div x-show="showCode" class="px-6 py-4">
+            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+  template: `
+    &lt;div x-data="__self__" class="flex items-center gap-4"&gt;
+      &lt;button @click="decrement"&gt;&#x2212;&lt;/button&gt;
+      &lt;span x-text="count"&gt;&lt;/span&gt;
+      &lt;button @click="increment"&gt;+&lt;/button&gt;
+    &lt;/div&gt;
+  `,
+  data: () => ({
+    count: 0,
+    increment() { this.count++ },
+    decrement() { this.count-- },
+  })
+}</pre>
           </div>
         </div>
 
         <!-- Dropdown -->
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Dropdown</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Dropdown.js</code></p>
             </div>
-            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Dropdown'"</span>
+            <div class="flex items-center gap-3">
+              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
+              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Dropdown'"</span>
+            </div>
           </div>
-          <div class="px-6 py-8 flex items-center justify-center">
+          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
             <div x-component="'Dropdown'"></div>
+          </div>
+          <div x-show="showCode" class="px-6 py-4">
+            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+  template: `
+    &lt;div x-data="__self__" class="relative inline-block"&gt;
+      ...
+    &lt;/div&gt;
+  `,
+  data: () => ({
+    open: false,
+    selected: 'Pick one',
+    items: ['Alpine.js', 'alpine-components', 'Vite', 'Tailwind'],
+  })
+}</pre>
           </div>
         </div>
 
         <!-- Modal -->
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Modal</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Modal.js</code></p>
             </div>
-            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Modal'"</span>
+            <div class="flex items-center gap-3">
+              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
+              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Modal'"</span>
+            </div>
           </div>
-          <div class="px-6 py-8 flex items-center justify-center">
+          <div x-show="!showCode" class="px-6 py-8 flex items-center justify-center">
             <div x-component="'Modal'"></div>
+          </div>
+          <div x-show="showCode" class="px-6 py-4">
+            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+  template: `
+    &lt;div x-data="__self__"&gt;
+      ...
+    &lt;/div&gt;
+  `,
+  data: () => ({ open: false })
+}</pre>
           </div>
         </div>
 
         <!-- Accordion -->
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div x-data="{ showCode: false }" class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <div>
               <h3 class="font-semibold text-sm">Accordion</h3>
               <p class="text-xs text-gray-400 mt-0.5">from <code class="font-mono">components/Accordion.js</code></p>
             </div>
-            <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Accordion'"</span>
+            <div class="flex items-center gap-3">
+              <button @click="showCode = !showCode" class="text-xs text-gray-400 hover:text-gray-700 transition-colors cursor-pointer font-mono" x-text="showCode ? 'Demo' : '&lt;&gt; Source'"></button>
+              <span class="text-xs font-mono bg-indigo-50 text-indigo-600 px-2 py-1 rounded">x-component="'Accordion'"</span>
+            </div>
           </div>
-          <div class="px-6 py-6">
+          <div x-show="!showCode" class="px-6 py-6">
             <div x-component="'Accordion'"></div>
+          </div>
+          <div x-show="showCode" class="px-6 py-4">
+            <pre class="bg-gray-950 text-gray-300 text-xs font-mono leading-relaxed overflow-x-auto rounded-lg p-4">export default {
+  template: `
+    &lt;div x-data="__self__" class="w-full space-y-2"&gt;
+      ...
+    &lt;/div&gt;
+  `,
+  data: () => ({
+    active: null,
+    items: [
+      { q: 'Do I need a build step?', a: 'No. Works with any Alpine.js setup.' },
+      { q: 'How do I register a component?', a: 'Export { template, data } and call registerComponent().' },
+      { q: 'Can I nest components?', a: 'Yes. Use x-component inside a template.' },
+    ]
+  })
+}</pre>
           </div>
         </div>
 
@@ -210,7 +279,7 @@
       </div>
 
       <div class="flex gap-8">
-        <aside class="w-48 shrink-0">
+        <aside class="w-48 shrink-0 sticky top-20 self-start">
           <nav class="flex flex-col gap-0.5">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Directives</p>
             <button @click="go('/docs/x-component')"
@@ -410,7 +479,6 @@ Alpine.<span class="text-green-400">start</span>()</pre>
   })
 }</pre>
         </div>
-        <p class="text-xs text-gray-400 mt-3 ml-1">Call <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">registerComponent('Counter', Counter)</code> in main.js before <code class="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">Alpine.start()</code>.</p>
       </div>
 
       <!-- Step 4: Use it -->
