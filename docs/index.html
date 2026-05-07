@@ -343,14 +343,14 @@
             <p class="text-gray-500 text-sm mb-8">Looks up a registered component by name, sets the element's <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">innerHTML</code> to its <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">template</code>, registers its <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> factory with Alpine, then calls <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.initTree()</code> on the element.</p>
 
             <!-- Usage -->
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Usage</p>
+            <p id="xc-usage" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Usage</p>
             <div class="rounded-xl overflow-hidden border border-gray-200 mb-8">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">index.html</span></div>
               <pre class="bg-gray-950 text-gray-300 px-5 py-4 text-sm font-mono leading-relaxed overflow-x-auto"><span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-component</span>=<span class="text-yellow-300">"'Counter'"</span><span class="text-blue-400">&gt;&lt;/div&gt;</span></pre>
             </div>
 
             <!-- Component format -->
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Component format</p>
+            <p id="xc-format" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Component format</p>
             <p class="text-gray-500 text-sm mb-3">A component is a plain JS module that exports a <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">template</code> string and a <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> factory function.</p>
             <div class="rounded-xl overflow-hidden border border-gray-200 mb-3">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Counter.js</span></div>
@@ -373,7 +373,7 @@
             </div>
 
             <!-- Registering components -->
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Registering components</p>
+            <p id="xc-registering" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Registering components</p>
             <p class="text-gray-500 text-sm mb-3">Call <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> for every component before <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">Alpine.start()</code>.</p>
             <div class="rounded-xl overflow-hidden border border-gray-200 mb-3">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">main.js</span></div>
@@ -392,7 +392,7 @@ Alpine.<span class="text-green-400">start</span>()</pre>
             <p class="text-gray-500 text-xs mb-8">The name passed to <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">registerComponent</code> must match the string in <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-component="'Counter'"</code> exactly.</p>
 
             <!-- Data-less components -->
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Data-less components</p>
+            <p id="xc-dataless" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Data-less components</p>
             <p class="text-gray-500 text-sm mb-3">If a component has no reactive state, omit <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">data</code> and <code class="font-mono text-xs bg-gray-100 px-1 py-0.5 rounded">x-data</code> entirely.</p>
             <div class="rounded-xl overflow-hidden border border-gray-200 mb-8">
               <div class="px-4 py-2.5 bg-gray-900 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></span><span class="w-2.5 h-2.5 rounded-full bg-green-500/70"></span><span class="ml-2 text-xs text-gray-400 font-mono">src/components/Banner.js</span></div>
@@ -402,7 +402,7 @@ Alpine.<span class="text-green-400">start</span>()</pre>
             </div>
 
             <!-- Troubleshooting -->
-            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Troubleshooting</p>
+            <p id="xc-troubleshooting" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Troubleshooting</p>
             <div class="space-y-3">
               <details class="rounded-xl border border-gray-200 overflow-hidden">
                 <summary class="px-4 py-3 bg-gray-50 text-sm font-medium cursor-pointer hover:bg-gray-100 transition-colors">Component doesn't render — nothing appears</summary>
